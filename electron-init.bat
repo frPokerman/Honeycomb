@@ -29,7 +29,7 @@ echo   "version": "1.0.0",
 echo   "description": "%desc%",
 echo   "main": "%main%",
 echo   "scripts": {
-echo     "start": "less-update && electron .",
+echo     "start": "less-update skeleton && electron .",
 echo     "test": "echo %name%: Ping !"
 echo   },
 echo   "author": "%author%",
@@ -43,6 +43,8 @@ cmd /c npm install -g less
 (
 echo @echo off
 echo SetLocal
+echo set "origin=%%cd%%"
+echo cd %%1
 echo FOR /r %%%%f in ^("*"^) do call :extract "%%%%f"
 echo goto :exit
 echo :extract
@@ -58,6 +60,7 @@ echo if "%%fileextension%%" == ".less" ^(
 echo     lessc %%1 "%%filepath%%%%filename%%.css"
 echo ^)
 echo :exit
+echo cd "%%origin%%"
 ) > less-update.bat
 
 echo.
@@ -73,7 +76,7 @@ echo     ^<head^>
 echo         ^<meta charset="UTF-8"^>
 ) > skeleton\index.html
 if "%doLive%" == "no" echo         ^<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"^> >> skeleton\index.html
-echo         ^<title^>Electron app^</title^> >> skeleton\index.html
+echo         ^<title^>%name%^</title^> >> skeleton\index.html
 
 if "%doLive%" == "yes" goto :ifLiveSnippet
 goto :ifNotLive
@@ -83,7 +86,7 @@ goto :ifNotLive
 echo         ^<script^>
 echo             if ^(window.location.protocol ^!^= "file:"^)
 echo             {
-echo                 const sockets = []^;
+echo                 const sockets ^= []^;
 echo                 const nativeWebSocket ^= window.WebSocket^;
 echo                 window.WebSocket ^= function^(...args^){
 echo                     const socket ^= new nativeWebSocket^(...args^)^;
@@ -97,7 +100,7 @@ echo                     socket.onmessage ^= function ^(msg^) {
 echo                         if ^(msg.data ^=^= ^'reload^'^)
 echo                         {
 echo                             const childProcess ^= require^("child_process"^)^;
-echo                             const bash_run ^= childProcess.spawn^(^'cmd.exe^', [ ^'/c^',^'less-update^' ]^)^;
+echo                             const bash_run ^= childProcess.spawn^(^'cmd.exe^', [ ^'/c^',^'less-update^',^'skeleton^' ]^)^;
 echo.
 echo                             bash_run.on^("exit", ^(^) ^=^> {
 echo                                 window.location.reload^(^)^;
