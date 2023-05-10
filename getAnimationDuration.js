@@ -25,7 +25,7 @@ function getAnimationDuration(element, transition = false)
     var object = Object.fromEntries(pattern.map(x => [ x, [] ]));
     for (let i = 0; i < target.length; i++)
     {
-        object[target[i % pattern.length]].push(target[i]);
+        object[pattern[i % pattern.length]].push(target[i]);
     }
 
     const a = pattern.sort((a, b) => a - b)[pattern.length - 1],
