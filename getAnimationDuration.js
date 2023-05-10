@@ -10,16 +10,7 @@ function getAnimationDuration(element, transition = false)
     const rules = [ "Duration", "Delay" ].map(x => style[ruleBase + x].split(",").slice(0, limit).map(s =>
     {
         let mut = 1000;
-        if (s.includes("ms"))
-        {
-            mut = 1;
-            s = s.replace("ms", "");
-        }
-        else
-        {
-            s = s.replace("s", "");
-        }
-
+        s = s.replace("s", "");
         return parseFloat(s.trim()) * mut;
     }));
 
