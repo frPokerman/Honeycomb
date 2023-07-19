@@ -84,7 +84,7 @@ goto :ifNotLive
 :ifLiveSnippet
 (
 echo         ^<script^>
-echo             if ^(window.location.protocol ^!^= "file:"^)
+echo             if ^(window.location.protocol ^!^= "file:" && window.WebSocket && typeof require ^=^= ^'function^'^)
 echo             {
 echo                 const sockets ^= []^;
 echo                 const nativeWebSocket ^= window.WebSocket^;
@@ -106,7 +106,7 @@ echo                             bash_run.on^("exit", ^(^) ^=^> {
 echo                                 window.location.reload^(^)^;
 echo                             }^)^;
 echo                         }
-echo                         else if ^(msg.data ^=^= ^'refreshcss^'^) oddEvent^(^)^;
+echo                         else if ^(msg.data ^=^= ^'refreshcss^'^) oddEvent^(msg^)^;
 echo                     }^;
 echo                 }, 1000^)^;
 echo             }
